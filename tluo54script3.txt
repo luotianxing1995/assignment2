@@ -1,0 +1,45 @@
+USE tluo54assign2db;
+/* -- Query 1 */
+SELECT last_name FROM patients;
+/* -- Query 2 */
+SELECT DISTINCT last_name FROM patients;
+/* -- Query 3 */
+SELECT * FROM doctor ORDER BY last_name;
+/* -- Query 4 */
+SELECT hospital_name, hospital_code FROM hospital
+WHERE number_of_beds > 1500;
+/* -- Query 5 */
+SELECT last_name, first_name FROM doctor d, hospital h
+WHERE d.hospital_code = h.hospital_code
+AND hospital_name = "St. Joseph";
+/* -- Query 6 */
+SELECT first_name, last_name FROM patients
+WHERE last_name LIKE 'G%';
+/* -- Query 7 */
+SELECT p.first_name, p.last_name FROM patients p, have h, doctor d
+WHERE p.ohip_number = h.ohip_number AND h.license_number = d.license_number
+AND d.last_name = "Clooney";
+/* -- Query 8 */
+SELECT hospital_name, city, d.last_name FROM hospital h, doctor d
+WHERE h.license_number = d.license_number;
+/* -- Query 9 */
+SELECT SUM(number_of_beds) AS "Total Number of Beds" FROM hospital;
+/* -- Query 10 */
+SELECT p.first_name, d.first_name FROM patients p, doctor d, have, hospital h
+WHERE d.license_number = h.license_number
+AND d.license_number = have.license_number
+AND p.ohip_number = have.ohip_number;
+/* -- Query 10 */
+SELECT last_name, first_name FROM doctor d, hospital h
+WHERE d.hospital_code = h.hospital_code
+AND hospital_name = "Victoria"
+AND specialty = "Surgeon";
+/* -- Query 12 */
+SELECT first_name FROM doctor d
+WHERE d.license_number NOT IN(
+  SELECT h.license_number FROM have h);
+/* -- Query 13 */
+SELECT last_name, first_name FROM doctor d, have h
+WHERE d.license_number = h.license_number
+GROUP BY d.license_number
+HAVING COUNT(ohip_number) > 1;

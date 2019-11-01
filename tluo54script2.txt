@@ -1,0 +1,110 @@
+USE tluo54assign2db;
+SELECT * FROM patients;
+
+LOAD DATA LOCAL INFILE "/home/centos/assignment2/loaddatafall2019.txt"
+INTO TABLE patients
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+(ohip_number, first_name, last_name);
+
+SELECT * FROM patients;
+
+INSERT INTO patients (ohip_number, first_name, last_name)
+VALUES (251090157, "Jason", "Luo");
+SELECT * FROM patients;
+
+
+SELECT * FROM doctor;
+INSERT INTO doctor (first_name, last_name, specialty, license_date, license_number, hospital_code)
+VALUES ("Bernie", "Kavorikian", "Urologist", "1980-09-09", "RD34", NULL);
+
+INSERT INTO doctor (first_name, last_name, specialty, license_date, license_number, hospital_code)
+VALUES ("Joey", "Shabado", "Podiatrist", "1960-06-24", "GD56", NULL);
+
+INSERT INTO doctor (first_name, last_name, specialty, license_date, license_number, hospital_code)
+VALUES ("Ross", "Clooney", "Surgeon", "1987-06-20", "HT45", NULL);
+
+INSERT INTO doctor (first_name, last_name, specialty, license_date, license_number, hospital_code)
+VALUES ("Ben", "Spock", "Pediatrician", "1955-02-20", "YT67", NULL);
+
+INSERT INTO doctor (first_name, last_name, specialty, license_date, license_number, hospital_code)
+VALUES ("Mandy", "Webster", "Surgeon", "1990-08-08", "JK78", NULL);
+
+INSERT INTO doctor (first_name, last_name, specialty, license_date, license_number, hospital_code)
+VALUES ("Colleen", "Aziz", "Surgeon", "1989-08-24", "SE66", NULL);
+
+INSERT INTO doctor (first_name, last_name, specialty, license_date, license_number, hospital_code)
+VALUES ("Kobe", "Bryant", "Psychiatrist", "1995-12-29", "KB24", NULL);
+
+SELECT * FROM doctor;
+
+SELECT * FROM hospital;
+
+INSERT INTO hospital (hospital_name, city, province, number_of_beds, hospital_code, license_number, started_date)
+VALUES ("St. Joseph", "London", "On", 1000, "BBC", "GD56", "1999-09-10");
+
+INSERT INTO hospital (hospital_name, city, province, number_of_beds, hospital_code, license_number, started_date)
+VALUES ("Victoria", "London", "On", 1600, "ABC", "YT67", "1997-12-07");
+
+INSERT INTO hospital (hospital_name, city, province, number_of_beds, hospital_code, license_number, started_date)
+VALUES ("Victoria", "Victoria", "BC", 1200, "DDE", "SE66", "1989-08-24");
+
+SELECT * FROM hospital;
+
+SELECT * FROM have;
+
+INSERT INTO have (license_number, ohip_number)
+VALUES ("GD56", 110112113);
+
+INSERT INTO have (license_number, ohip_number)
+VALUES ("HT45", 444555666);
+
+INSERT INTO have (license_number, ohip_number)
+VALUES ("JK78", 444555666);
+
+INSERT INTO have (license_number, ohip_number)
+VALUES ("JK78", 111222333);
+
+INSERT INTO have (license_number, ohip_number)
+VALUES ("SE66", 111222333);
+
+INSERT INTO have (license_number, ohip_number)
+VALUES ("YT67", 111222333);
+
+INSERT INTO have (license_number, ohip_number)
+VALUES ("GD56", 333444555);
+
+INSERT INTO have (license_number, ohip_number)
+VALUES ("YT67", 667766777);
+
+INSERT INTO have (license_number, ohip_number)
+VALUES ("JK78", 667766777);
+
+INSERT INTO have (license_number, ohip_number)
+VALUES ("GD56", 667766777);
+
+INSERT INTO have (license_number, ohip_number)
+VALUES ("YT67", 111222111);
+
+INSERT INTO have (license_number, ohip_number)
+VALUES ("YT67", 251090157);
+
+SELECT * FROM have;
+
+SELECT * FROM doctor;
+UPDATE doctor SET hospital_code = "BBC" WHERE license_number = "RD34";
+UPDATE doctor SET hospital_code = "BBC" WHERE license_number = "GD56";
+UPDATE doctor SET hospital_code = "ABC" WHERE license_number = "HT45";
+UPDATE doctor SET hospital_code = "ABC" WHERE license_number = "YT67";
+UPDATE doctor SET hospital_code = "BBC" WHERE license_number = "JK78";
+UPDATE doctor SET hospital_code = "ABC" WHERE license_number = "SE66";
+UPDATE doctor SET hospital_code = "ABC" WHERE license_number = "KB24";
+SELECT * FROM doctor;
+
+SELECT * FROM patients;
+UPDATE patients SET last_name = "Brown" WHERE ohip_number = 111222111;
+SELECT * FROM patients;
+
+SELECT * FROM have;
+UPDATE have SET license_number = (SELECT license_number FROM doctor WHERE last_name = "Clooney") WHERE license_number = (SELECT license_number FROM doctor WHERE last_name = "Spock");
+SELECT * FROM have;

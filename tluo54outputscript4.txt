@@ -1,2 +1,153 @@
 Warning: Using a password on the command line interface can be insecure.
-ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+--------------
+SELECT * FROM doctor
+--------------
+
++------------+------------+--------------+--------------+----------------+---------------+
+| first_name | last_name  | license_date | specialty    | license_number | hospital_code |
++------------+------------+--------------+--------------+----------------+---------------+
+| Joey       | Shabado    | 1960-06-24   | Podiatrist   | GD56           | BBC           |
+| Ross       | Clooney    | 1987-06-20   | Surgeon      | HT45           | ABC           |
+| Mandy      | Webster    | 1990-08-08   | Surgeon      | JK78           | BBC           |
+| Kobe       | Bryant     | 1995-12-29   | Psychiatrist | KB24           | ABC           |
+| Bernie     | Kavorikian | 1980-09-09   | Urologist    | RD34           | BBC           |
+| Colleen    | Aziz       | 1989-08-24   | Surgeon      | SE66           | ABC           |
+| Ben        | Spock      | 1955-02-20   | Pediatrician | YT67           | ABC           |
++------------+------------+--------------+--------------+----------------+---------------+
+7 rows in set (0.00 sec)
+
+ERROR 1451 (23000) at line 3: Cannot delete or update a parent row: a foreign key constraint fails (`tluo54assign2db`.`hospital`, CONSTRAINT `hospital_ibfk_1` FOREIGN KEY (`license_number`) REFERENCES `doctor` (`license_number`))
+--------------
+DELETE FROM doctor WHERE license_date < "1965-01-01"
+--------------
+
+--------------
+SELECT * FROM doctor
+--------------
+
++------------+------------+--------------+--------------+----------------+---------------+
+| first_name | last_name  | license_date | specialty    | license_number | hospital_code |
++------------+------------+--------------+--------------+----------------+---------------+
+| Joey       | Shabado    | 1960-06-24   | Podiatrist   | GD56           | BBC           |
+| Ross       | Clooney    | 1987-06-20   | Surgeon      | HT45           | ABC           |
+| Mandy      | Webster    | 1990-08-08   | Surgeon      | JK78           | BBC           |
+| Kobe       | Bryant     | 1995-12-29   | Psychiatrist | KB24           | ABC           |
+| Bernie     | Kavorikian | 1980-09-09   | Urologist    | RD34           | BBC           |
+| Colleen    | Aziz       | 1989-08-24   | Surgeon      | SE66           | ABC           |
+| Ben        | Spock      | 1955-02-20   | Pediatrician | YT67           | ABC           |
++------------+------------+--------------+--------------+----------------+---------------+
+7 rows in set (0.00 sec)
+
+ERROR 1064 (42000) at line 5: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '--The deletion fails because license number is a foreign key of hospital and hav' at line 1
+ERROR 1146 (42S02) at line 16: Table 'tluo54assign2db.patient_by_head' doesn't exist
+--------------
+--The deletion fails because license number is a foreign key of hospital and have,
+---if we delete a doctor, then the table hospital and have would be influenced.
+
+CREATE VIEW patient_by_head AS
+SELECT p.first_name AS "Patient_first_name", p.last_name AS "patient_last_name", d.last_name AS "Doctor_last_name", hospital_name
+FROM patients p, have, hospital h, doctor d
+WHERE p.ohip_number = have.ohip_number
+AND d.license_number = have.license_number
+AND h.license_number = d.license_number
+AND started_date > "1995-12-31"
+--------------
+
+--------------
+SELECT * FROM patient_by_head
+--------------
+
+--------------
+SELECT * FROM doctor
+--------------
+
++------------+------------+--------------+--------------+----------------+---------------+
+| first_name | last_name  | license_date | specialty    | license_number | hospital_code |
++------------+------------+--------------+--------------+----------------+---------------+
+| Joey       | Shabado    | 1960-06-24   | Podiatrist   | GD56           | BBC           |
+| Ross       | Clooney    | 1987-06-20   | Surgeon      | HT45           | ABC           |
+| Mandy      | Webster    | 1990-08-08   | Surgeon      | JK78           | BBC           |
+| Kobe       | Bryant     | 1995-12-29   | Psychiatrist | KB24           | ABC           |
+| Bernie     | Kavorikian | 1980-09-09   | Urologist    | RD34           | BBC           |
+| Colleen    | Aziz       | 1989-08-24   | Surgeon      | SE66           | ABC           |
+| Ben        | Spock      | 1955-02-20   | Pediatrician | YT67           | ABC           |
++------------+------------+--------------+--------------+----------------+---------------+
+7 rows in set (0.00 sec)
+
+--------------
+SELECT * FROM have
+--------------
+
++----------------+-------------+
+| license_number | ohip_number |
++----------------+-------------+
+| GD56           | 110112113   |
+| HT45           | 444555666   |
+| JK78           | 444555666   |
+| JK78           | 111222333   |
+| SE66           | 111222333   |
+| HT45           | 111222333   |
+| GD56           | 333444555   |
+| HT45           | 667766777   |
+| JK78           | 667766777   |
+| GD56           | 667766777   |
+| HT45           | 111222111   |
+| HT45           | 251090157   |
++----------------+-------------+
+12 rows in set (0.00 sec)
+
+--------------
+SELECT * FROM doctor
+--------------
+
++------------+------------+--------------+--------------+----------------+---------------+
+| first_name | last_name  | license_date | specialty    | license_number | hospital_code |
++------------+------------+--------------+--------------+----------------+---------------+
+| Joey       | Shabado    | 1960-06-24   | Podiatrist   | GD56           | BBC           |
+| Ross       | Clooney    | 1987-06-20   | Surgeon      | HT45           | ABC           |
+| Mandy      | Webster    | 1990-08-08   | Surgeon      | JK78           | BBC           |
+| Kobe       | Bryant     | 1995-12-29   | Psychiatrist | KB24           | ABC           |
+| Bernie     | Kavorikian | 1980-09-09   | Urologist    | RD34           | BBC           |
+| Colleen    | Aziz       | 1989-08-24   | Surgeon      | SE66           | ABC           |
+| Ben        | Spock      | 1955-02-20   | Pediatrician | YT67           | ABC           |
++------------+------------+--------------+--------------+----------------+---------------+
+7 rows in set (0.00 sec)
+
+--------------
+DELETE FROM doctor WHERE last_name = "Clooney"
+--------------
+
+Query OK, 1 row affected (0.26 sec)
+
+--------------
+SELECT * FROM doctor
+--------------
+
++------------+------------+--------------+--------------+----------------+---------------+
+| first_name | last_name  | license_date | specialty    | license_number | hospital_code |
++------------+------------+--------------+--------------+----------------+---------------+
+| Joey       | Shabado    | 1960-06-24   | Podiatrist   | GD56           | BBC           |
+| Mandy      | Webster    | 1990-08-08   | Surgeon      | JK78           | BBC           |
+| Kobe       | Bryant     | 1995-12-29   | Psychiatrist | KB24           | ABC           |
+| Bernie     | Kavorikian | 1980-09-09   | Urologist    | RD34           | BBC           |
+| Colleen    | Aziz       | 1989-08-24   | Surgeon      | SE66           | ABC           |
+| Ben        | Spock      | 1955-02-20   | Pediatrician | YT67           | ABC           |
++------------+------------+--------------+--------------+----------------+---------------+
+6 rows in set (0.00 sec)
+
+ERROR 1064 (42000) at line 25: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '--This deletion is successful since there is a delete cascade constraint on doct' at line 1
+ERROR 1064 (42000) at line 28: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '--This deletion fails because some doctors who is a surgeon is also the 
+--head ' at line 1
+--------------
+--This deletion is successful since there is a delete cascade constraint on doctor table.
+
+DELETE FROM doctor WHERE specialty = "Surgeon"
+--------------
+
+--------------
+--This deletion fails because some doctors who is a surgeon is also the 
+--head of some hospitals. if we delete this doctor, then the hospital 
+--table would be influenced.
+--------------
+
+Bye

@@ -1,2 +1,110 @@
 Warning: Using a password on the command line interface can be insecure.
-ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+--------------
+SHOW DATABASES
+--------------
+
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| firstdb            |
+| mysql              |
+| performance_schema |
+| tluo54assign2db    |
++--------------------+
+5 rows in set (0.00 sec)
+
+--------------
+DROP DATABASE tluo54assign2db
+--------------
+
+Query OK, 5 rows affected (0.13 sec)
+
+--------------
+CREATE DATABASE tluo54assign2db
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+GRANT USAGE ON *.* TO 'ta'@'localhost'
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+DROP USER 'ta'@'localhost'
+--------------
+
+Query OK, 0 rows affected (0.01 sec)
+
+--------------
+CREATE USER 'ta'@'localhost' IDENTIFIED BY 'cs3319'
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+GRANT ALL PRIVILEGES ON tluo54assign2db.* TO 'ta'@'localhost'
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+FLUSH PRIVILEGES
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+SHOW TABLES
+--------------
+
+Empty set (0.00 sec)
+
+--------------
+CREATE TABLE hospital (number_of_beds INT, hospital_name VARCHAR(20), city VARCHAR(20), province CHAR(2), hospital_code CHAR(3), PRIMARY KEY(hospital_code), started_date DATE, license_number char(4))
+--------------
+
+Query OK, 0 rows affected (0.23 sec)
+
+--------------
+CREATE TABLE doctor (first_name VARCHAR(20), last_name VARCHAR(20), license_date DATE, specialty VARCHAR(30), license_number CHAR(4), hospital_code CHAR(3), PRIMARY KEY (license_number), FOREIGN KEY(hospital_code) REFERENCES hospital(hospital_code))
+--------------
+
+Query OK, 0 rows affected (0.06 sec)
+
+--------------
+CREATE TABLE patients (ohip_number CHAR(9), first_name VARCHAR(20), last_name VARCHAR(20), PRIMARY KEY(ohip_number))
+--------------
+
+Query OK, 0 rows affected (0.46 sec)
+
+--------------
+CREATE TABLE have (license_number char(4), ohip_number char(9), FOREIGN KEY(license_number) REFERENCES doctor(license_number) ON DELETE CASCADE, FOREIGN KEY(ohip_number) REFERENCES patients(ohip_number))
+--------------
+
+Query OK, 0 rows affected (0.09 sec)
+
+--------------
+ALTER TABLE hospital ADD FOREIGN KEY(license_number) REFERENCES doctor(license_number)
+--------------
+
+Query OK, 0 rows affected (0.22 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+--------------
+SHOW TABLES
+--------------
+
++---------------------------+
+| Tables_in_tluo54assign2db |
++---------------------------+
+| doctor                    |
+| have                      |
+| hospital                  |
+| patients                  |
++---------------------------+
+4 rows in set (0.00 sec)
+
+Bye
